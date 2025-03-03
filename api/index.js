@@ -7,9 +7,12 @@ var cors = require("cors");
 const multer = require("multer");
 
 //Create an instance of express app
-var app=Express();
+var app=Express()
 //Make use of the CORS module
 app.use(cors());
+
+app.use(Express.json());
+app.use(Express.urlencoded({extended:true}));
 
 //Indicate the connection string from mongodb
 var CONNECTION_STRING = "mongodb+srv://jimwellwork28:Awawaw123@cluster0.reeut.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
@@ -44,7 +47,9 @@ app.post('/api/books/AddBook', multer().none(), async (req, res) => {
         const numOfDocs = await database.collection("books").countDocuments();
         await database.collection("books").insertOne({
             id: (numOfDocs + 1).toString(),
-            title: req.body.title
+            title: req.body.title,
+            description: req.body.description,
+            price: req.body.price,
         });
         res.json("Added Successfully");
     } catch (error) {
